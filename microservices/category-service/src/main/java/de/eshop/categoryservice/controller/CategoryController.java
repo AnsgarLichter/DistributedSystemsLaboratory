@@ -1,14 +1,12 @@
 package de.eshop.categoryservice.controller;
 
+import de.eshop.categoryservice.models.Category;
 import de.eshop.categoryservice.services.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/categories")
@@ -21,8 +19,24 @@ public class CategoryController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<String>> getCategories(){
-        var categoryList = this.categoryService.getCategoryService();
-        return new ResponseEntity<List<String>>(categoryList, HttpStatus.OK);
+    public ResponseEntity<Iterable<Category>> getCategories(){
+        var categoryList = this.categoryService.findAllCategories();
+        return new ResponseEntity<Iterable<Category>>(categoryList, HttpStatus.OK);
+    }
+
+    public ResponseEntity<Optional<Category>> getCategory(@PathVariable Integer id){
+        var category = this.categoryService.findCategory(id);
+        return new ResponseEntity<Optional<Category>>(category, HttpStatus.OK);
+    }
+
+    @PostMapping()
+    public ResponseEntity<Object> addCategory(@RequestBody Category category){
+        this.categoryService.addCategory(category);
+        return new ResponseEntity<Object>(HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<Object> deleteCategory(@PathVariable Integer id){
+        this.categoryService.deleteCategory(id);
+        return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
     }
 }
