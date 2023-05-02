@@ -26,6 +26,14 @@ public class ProductService {
         return this.repository.findById(id);
     }
 
+    public List<Product> findByCategory(Long categoryId) {
+        return (List<Product>) this.repository.findByCategory(categoryId);
+    }
+
+    public List<Product> findBySearchCriteria(String search, Double minimumPrice, Double maximumPrice) {
+        return (List<Product>) this.repository.findBySearchCriteria("%" + search + "%", minimumPrice, maximumPrice);
+    }
+
     public void add(Product product) {
         this.repository.save(product);
     }
