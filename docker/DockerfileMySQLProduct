@@ -1,0 +1,3 @@
+FROM mysql:5.7.9
+
+COPY ./sql/product-db.sql /docker-entrypoint-initdb.d/product-db.sql
