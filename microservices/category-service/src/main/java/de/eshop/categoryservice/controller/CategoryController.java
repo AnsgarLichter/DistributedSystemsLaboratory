@@ -2,6 +2,7 @@ package de.eshop.categoryservice.controller;
 
 import de.eshop.categoryservice.models.Category;
 import de.eshop.categoryservice.services.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,21 +13,22 @@ import java.util.Optional;
 @RequestMapping("/api/v1/categories")
 public class CategoryController {
 
+    @Autowired
     private CategoryService categoryService;
-
     public CategoryController(CategoryService categoryService){
         this.categoryService = categoryService;
     }
 
     @GetMapping()
-    public ResponseEntity<Iterable<Category>> getCategories(){
+    public ResponseEntity<List<Category>> getCategories(){
         var categoryList = this.categoryService.findAllCategories();
-        return new ResponseEntity<Iterable<Category>>(categoryList, HttpStatus.OK);
+        return new ResponseEntity<List<Category>>(categoryList, HttpStatus.OK);
     }
 
-    public ResponseEntity<Optional<Category>> getCategory(@PathVariable Integer id){
+    @GetMapping()
+    public ResponseEntity<Category> getCategory(@PathVariable Integer id){
         var category = this.categoryService.findCategory(id);
-        return new ResponseEntity<Optional<Category>>(category, HttpStatus.OK);
+        return new ResponseEntity<Category>(category, HttpStatus.OK);
     }
 
     @PostMapping()
