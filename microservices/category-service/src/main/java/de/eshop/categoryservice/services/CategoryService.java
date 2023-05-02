@@ -5,33 +5,32 @@ import de.eshop.categoryservice.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CategoryService {
 
-    private CategoryRepository categoryRepository;
 
+    private CategoryRepository categoryRepository;
     @Autowired
     public CategoryService(CategoryRepository categoryRepository){
         this.categoryRepository = categoryRepository;
     }
 
     public List<Category> findAllCategories(){
-        return this.categoryRepository.findAll();
+        return (List<Category>)this.categoryRepository.findAll();
     }
 
-    public Category findCategory(Integer id){
-        return this.categoryRepository.findByIdCategory(id);
+    public Optional<Category> findCategory(Long id){
+        return this.categoryRepository.findById(id);
     }
 
     public void addCategory(Category category){
-        this.categoryRepository.saveCategory(category);
+        this.categoryRepository.save(category);
     }
 
-    public void deleteCategory(Integer id){
+    public void deleteCategory(Long id){
         this.categoryRepository.deleteById(id);
     }
 }

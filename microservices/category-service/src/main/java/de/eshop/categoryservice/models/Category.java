@@ -11,15 +11,22 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NonNull
-    private Integer id;
+    private Long id;
     @NonNull
     private String name;
 
-    public void setId(Integer id){
+    public Category(){}
+
+    public Category(Long id, String name){
+        this.id = id;
+        this.name = name;
+    }
+
+    public void setId(Long id){
         this.id = id;
     }
 
-    public Integer getId(){
+    public Long getId(){
         return this.id;
     }
 

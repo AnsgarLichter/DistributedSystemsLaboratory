@@ -1,10 +1,9 @@
 version: '3.2'
 services:
-
-  web-shop-db-image-category:
+  web-shop-db-image:
     build:
       context: ./
-      dockerfile: ./docker/DockerfileMySQL
+      dockerfile: ./docker/DockerfileMySQLCategory
     volumes:
       - "./.data/db:/var/lib/mysql"
     environment:
@@ -15,9 +14,9 @@ services:
     ports:
       - "3306:3306"
     networks:
-      local_dev_net:
-        aliases:
-          - web-shop-db-image-category
+        local_dev_net:
+            aliases:
+                - web-shop-db-image
 
 networks:
   local_dev_net:

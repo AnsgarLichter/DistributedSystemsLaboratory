@@ -1,0 +1,3 @@
+FROM mysql:5.7.9
+
+COPY ./sql/category-db.sql /docker-entrypoint-initdb.d/category-db.sql

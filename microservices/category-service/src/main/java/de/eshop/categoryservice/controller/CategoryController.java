@@ -13,22 +13,22 @@ import java.util.Optional;
 @RequestMapping("/api/v1/categories")
 public class CategoryController {
 
-    @Autowired
     private CategoryService categoryService;
+
     public CategoryController(CategoryService categoryService){
         this.categoryService = categoryService;
     }
 
-    @GetMapping()
+    @GetMapping("/all")
     public ResponseEntity<List<Category>> getCategories(){
         var categoryList = this.categoryService.findAllCategories();
         return new ResponseEntity<List<Category>>(categoryList, HttpStatus.OK);
     }
 
     @GetMapping()
-    public ResponseEntity<Category> getCategory(@PathVariable Integer id){
+    public ResponseEntity<Optional<Category>> getCategory(@PathVariable Long id){
         var category = this.categoryService.findCategory(id);
-        return new ResponseEntity<Category>(category, HttpStatus.OK);
+        return new ResponseEntity<Optional<Category>>(category, HttpStatus.OK);
     }
 
     @PostMapping()
@@ -37,7 +37,7 @@ public class CategoryController {
         return new ResponseEntity<Object>(HttpStatus.CREATED);
     }
 
-    public ResponseEntity<Object> deleteCategory(@PathVariable Integer id){
+    public ResponseEntity<Object> deleteCategory(@PathVariable Long id){
         this.categoryService.deleteCategory(id);
         return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
     }
