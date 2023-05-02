@@ -16,7 +16,7 @@ public class CategoryServiceApplication {
 	@Bean
 	public CommandLineRunner demo(CategoryRepository repository) {
 		return (args) -> {
-			repository.save(new Product(1L, "Test", ));
+			repository.save(new Category(1L, "Test"));
 		};
 	}
 
