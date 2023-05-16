@@ -1,3 +1,11 @@
-FROM mysql:5.7.9
+# Use an official MySQL runtime as the base image
+FROM mysql:latest
 
+# Set the root password (change "your_mysql_root_password" to your desired password)
+ENV MYSQL_ROOT_PASSWORD=c8de110f37300a53a971749
+
+# Create a database (change "your_database_name" to your desired database name)
+# ENV MYSQL_DATABASE=product
+
+# Copy the SQL script to initialize the database (change "init.sql" to your desired SQL script name)
 COPY ./sql/product-db.sql /docker-entrypoint-initdb.d/product-db.sql
