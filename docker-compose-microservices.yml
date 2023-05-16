@@ -1,54 +1,60 @@
 version: '3.2'
 services:
-  # category-service:
-  #   build:
-  #     context: ./
-  #     dockerfile: TODO
-  #   ports:
-  #     - "8081:8080"
-  #   depends_on:
-  #     - db-image-product
-  #   networks:
-  #     - microservices
+  category-db:
+    hostname: category-db
+    build:
+      context: ./microservices/category-service
+      dockerfile: docker/CategoryDatabase
+    volumes:
+      - "./.data/category:/var/lib/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_TCP_PORT: 3306
+    ports:
+      - "3306:3306"
+    networks:
+      backend:
+        aliases:
+          - category-db
 
-  # db-image-category:
-  #   build:
-  #     context: ./
-  #     dockerfile: microservices/category-service/docker/DockerfileMySQLCategory
-  #   volumes:
-  #     - "./.data/category:/var/lib/mysql"
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: c8de110f37300a53a971749
-  #   ports:
-  #     - "3306:3306"
-  #   networks:
-  #     local_dev_net_1:
-  #       aliases:
-  #         - db-image-category
+  category-service:
+    build:
+      context: ./microservices/category-service
+      dockerfile: docker/CategoryService
+    ports:
+      - "8080:8080"
+    depends_on:
+      - category-db
+    networks:
+      - backend
 
   product-db:
     hostname: product-db
     build:
-      context: microservices/product-service
-      dockerfile: docker/DockerfileMySQLProduct
+      context: ./microservices/product-service
+      dockerfile: docker/ProductDatabase
     volumes:
       - "./.data/product:/var/lib/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_TCP_PORT: 3307
     ports:
-      - "3307:3306"
+      - "3307:3307"
     networks:
-      - microservices
+      backend:
+        aliases:
+          - product-db
 
   product-service:
     build:
-      context: microservices/product-service
-      dockerfile: docker/DockerProductMicroservice
+      context: ./microservices/product-service
+      dockerfile: docker/ProductService
     ports:
       - "8081:8080"
     depends_on:
       - product-db
     networks:
-      - microservices
-
+      - backend
 networks:
-  microservices:
+  backend:
     driver: bridge
