@@ -18,6 +18,7 @@ services:
           - category-db
 
   category-service:
+    hostname: category-service
     build:
       context: ./microservices/category-service
       dockerfile: docker/CategoryService
@@ -46,6 +47,7 @@ services:
           - product-db
 
   product-service:
+    hostname: product-service
     build:
       context: ./microservices/product-service
       dockerfile: docker/ProductService

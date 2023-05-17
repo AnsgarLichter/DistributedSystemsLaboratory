@@ -1,34 +1,5 @@
 version: '3.2'
 services:
-  web-shop-db-image:
-    build:
-      context: ./
-      dockerfile: ./docker/DockerfileMySQL
-    volumes:
-      - "./.data/shop:/var/lib/mysql"
-    environment:
-      MYSQL_ROOT_PASSWORD: c8de110f37300a53a971749
-      MYSQL_DATABASE: webshop
-      MYSQL_USER: webshopuser
-      MYSQL_PASSWORD: 240b2c6d58ff2ce2f508b49f
-    ports:
-      - "3306:3306"
-    networks:
-      backend:
-        aliases:
-          - web-shop-db-image
-
-  legacywebshop:
-    build:
-      context: ./
-      dockerfile: ./docker/Dockerfile
-    ports:
-      - "8888:8080"
-    networks:
-      backend:
-        aliases:
-          - legacywebshop
-
   category-db:
     hostname: category-db
     build:
@@ -53,10 +24,13 @@ services:
       dockerfile: docker/CategoryService
     ports:
       - "8080:8080"
+      - "5006:5006"
     depends_on:
       - category-db
     networks:
       - backend
+    environment:
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006
 
   product-db:
     hostname: product-db
@@ -82,10 +56,14 @@ services:
       dockerfile: docker/ProductService
     ports:
       - "8081:8080"
+      - "5005:5005"
     depends_on:
       - product-db
     networks:
       - backend
+    environment:
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+
 networks:
   backend:
     driver: bridge
