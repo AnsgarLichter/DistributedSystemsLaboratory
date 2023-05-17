@@ -51,6 +51,6 @@ public class ProductService {
     }
 
     public void delete(Long id) {
-
+        this.repository.deleteById(id);
     }
 }
