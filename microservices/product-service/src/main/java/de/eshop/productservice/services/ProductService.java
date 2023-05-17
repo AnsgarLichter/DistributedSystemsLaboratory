@@ -14,7 +14,7 @@ public class ProductService {
     private final ProductRepository repository;
 
     @Autowired
-    public ProductService(ProductRepository repository){
+    public ProductService(ProductRepository repository) {
         this.repository = repository;
     }
 
@@ -31,7 +31,19 @@ public class ProductService {
     }
 
     public List<Product> findBySearchCriteria(String search, Double minimumPrice, Double maximumPrice) {
-        return (List<Product>) this.repository.findBySearchCriteria("%" + search + "%", minimumPrice, maximumPrice);
+        if (search != null && minimumPrice != null && maximumPrice != null) {
+            return (List<Product>) this.repository.findBySearchCriteria("%" + search + "%", minimumPrice, maximumPrice);
+        } else if (search != null && minimumPrice != null) {
+            return (List<Product>) this.repository.findByKeywordAndMinPrice("%" + search + "%", minimumPrice);
+        } else if (search != null && maximumPrice != null) {
+            return (List<Product>) this.repository.findByKeywordAndMaxPrice("%" + search + "%", maximumPrice);
+        } else if (search == null && minimumPrice != null) {
+            return (List<Product>) this.repository.findByMinPrice(minimumPrice);
+        } else if (search == null && maximumPrice != null) {
+            return (List<Product>) this.repository.findByMaxPrice(maximumPrice);
+        }
+
+        return (List<Product>) this.repository.findByKeyword("%" + search + "%");
     }
 
     public void add(Product product) {

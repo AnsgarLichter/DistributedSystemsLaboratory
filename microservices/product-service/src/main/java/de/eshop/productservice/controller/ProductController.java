@@ -60,7 +60,7 @@ public class ProductController {
         }
 
         this.service.add(product);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(this.service.findById(product.getId()), HttpStatus.CREATED);
     }
 
     @DeleteMapping("{id}")
