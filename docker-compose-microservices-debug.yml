@@ -24,10 +24,13 @@ services:
       dockerfile: docker/CategoryService
     ports:
       - "8080:8080"
+      - "5006:5006"
     depends_on:
       - category-db
     networks:
       - backend
+    environment:
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006
 
   product-db:
     hostname: product-db
@@ -53,10 +56,14 @@ services:
       dockerfile: docker/ProductService
     ports:
       - "8081:8081"
+      - "5005:5005"
     depends_on:
       - product-db
     networks:
       - backend
+    environment:
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+
 networks:
   backend:
     driver: bridge
