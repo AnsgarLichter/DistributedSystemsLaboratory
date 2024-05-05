@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-service
+  labels:
+    app: product
+spec:
+  ports:
+  - port: 8081
+    name: product-port
+  clusterIP: None
+  selector:
+    app: product
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product
+  labels:
+    app: product
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: product
+  template:
+    metadata:
+      labels:
+        app: product
+    spec:
+      containers:
+      - name: product
+        image: product-service:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8081
+          name: product-port

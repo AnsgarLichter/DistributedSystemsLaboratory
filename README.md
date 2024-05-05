@@ -48,6 +48,30 @@ $ rm -rf .data
 ```
 Details can be found [here](https://github.com/docker-library/mysql/issues/51)
 
+## <a name="kubernetes"></a>Kubernetes
+First of all, the different components have to be packaged into Docker images. To do this, the following command has to be executed per Dockerfile:
+
+`docker build -t <your-image-name>:<your-version> -f <path-to-dockerfile> .`
+
+Then next, the individual Kubernetes configurations must be deployed. To do this, they must be deployed in the following order:
+1. pvc-mysql.yaml
+2. mysql-legacy.yaml
+3. mysql-category.yaml
+4. mysql-product.yaml
+5. category-service.yaml
+6. product-service.yaml
+7. webshop.yaml
+8. istio.yaml
+
+The configurations can be deployed with the following command:
+
+`kubectl apply -f <file-name>`
+
+More useful commands:
+- `kubectl port-forward svc/<service-name> <outside-port>:<inside-port> -n <namespace>`
+- `kubectl get ns default --show-labels`
+- `kubectl label namespace default istio-injection=enabled`
+
 ## <a name="license"></a>License
 Copyright (c) 2017-2018 Manuel Vogel
 Source code is open source and released under the MIT license.
